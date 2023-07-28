@@ -48,7 +48,7 @@ const handle_ask = async () => {
     const gpt_response_text = await ask_gpt(message);
 
     if (gpt_response_text.length > 0) {
-      const angry = true;
+      const angry = false;
       const next_response_prompt = `
       ${
         angry &&

@@ -84,15 +84,23 @@ class Backend_Api:
 
             last_user_message = prompt["content"]
 
-            tone_check_response: ToneCheckReponse = self.tone.check(
-                last_user_message, "angry"
+            angry_check: ToneCheckReponse = self.tone.check(last_user_message, "angry")
+            engaged_check: ToneCheckReponse = self.tone.check(
+                last_user_message, "engaged"
             )
-            print(tone_check_response.judgment)
             statsd.gauge(
                 **{
                     "metric": "tone",
-                    "value": tone_check_response.judgment,
+                    "value": angry_check.judgment,
                     "tags": ["tone:angry"],
+                    "sample_rate": DATADOG_SAMPLE_RATE,
+                }
+            )
+            statsd.gauge(
+                **{
+                    "metric": "tone",
+                    "value": engaged_check.judgment,
+                    "tags": ["tone:engaged"],
                     "sample_rate": DATADOG_SAMPLE_RATE,
                 }
             )
