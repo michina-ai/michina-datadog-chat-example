@@ -43,29 +43,8 @@ const handle_ask = async () => {
   window.scrollTo(0, 0);
   let message = message_input.value;
 
-  while (message.length > 0) {
-    message_input.value = ``;
-    const gpt_response_text = await ask_gpt(message);
-
-    if (gpt_response_text.length > 0) {
-      const angry = false;
-      const next_response_prompt = `
-      ${
-        angry &&
-        `You are an acting coach helping people learn to how to act angry and confrontationally. 
-        Try to respond to messages with an angry or curt tone for the benefit of your acting students.`
-      }
-      Someone just said to you "${gpt_response_text}". What would you say next? 
-      ${
-        !angry &&
-        `You should try to be as conversationally engaging as possible. Ask lots of follow up questions to keep the conversation flowing.`
-      }
-      Keep your response to 2-3 sentences.`;
-
-      const response = await get_streaming_response(next_response_prompt);
-      message = await collect_stream(response.body.getReader());
-    }
-  }
+  message_input.value = ``;
+  await ask_gpt(message);
 };
 
 const remove_cancel_button = async () => {
